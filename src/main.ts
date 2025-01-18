@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { envs } from './config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { RpcCustomExceptionFilter } from './common';
@@ -19,8 +18,6 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new RpcCustomExceptionFilter())
-
-
 
   await app.listen(envs.port);
 
