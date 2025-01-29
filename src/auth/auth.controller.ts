@@ -1,9 +1,12 @@
-import { Post, Body, Get, Inject } from '@nestjs/common';
+import { Post, Body, Get, Inject, Req, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from 'src/config';
 import { SigninUserDto, SignupUserDto } from './dto';
 import { firstValueFrom } from 'rxjs';
+import { AuthGuard } from './guards/auth.guard';
+import { Token, User } from './decorators';
+import { CurrentUser } from './interfaces/user.interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +29,13 @@ export class AuthController {
   }
 
 
+  @UseGuards( AuthGuard )
   @Get('verify')
-  verifyToken() {
+  verifyToken(@User() user: CurrentUser, @Token() token: string) {
+
+    // const user = req['user'];
+    // const token = req['token'];
+
+    return {user, token};
   }
 }
